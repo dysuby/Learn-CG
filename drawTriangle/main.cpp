@@ -77,6 +77,11 @@ int main() {
     bool imgui = true;
     int type = 0;
 
+    unsigned int VBO, VAO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
     while (!glfwWindowShouldClose(window)) {
         // Process the input
         processInput(window);
@@ -92,11 +97,6 @@ int main() {
             -0.5f, -0.5f, 0.0f, bottomLeftColor.x, bottomLeftColor.y, bottomLeftColor.z,
             -0.5f, 0.5f, 0.0f, topLeftColor.x, topLeftColor.y, topLeftColor.z
         };
-
-        unsigned int VBO, VAO, EBO;
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-        glGenBuffers(1, &EBO);
 
         // VAO & VBO
         glBindVertexArray(VAO);
