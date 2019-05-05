@@ -7,3 +7,11 @@
 
 2. Bresenham 算法 & 光栅转换
   ![](hw3/screenshot/sample.gif)
+
+3. Transformation
+   ![](hw4/doc/sample.gif)
+
+4. Camera(too many gif)
+
+6. Lights and Shading
+   ![](hw6/doc/sample.gif)
