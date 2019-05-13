@@ -323,7 +323,7 @@ int main() {
         float near_plane = 1.0f, far_plane = 10.0f;
 
         if (type) {
-            // projection
+            // perspective
             lightProjection = glm::perspective(glm::radians(120.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, 2.0f, 100.0f);
             lightView = glm::lookAt(lightPos * 1.5f, glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
             debugDepthQuad.setBool("p_or_o", true);
