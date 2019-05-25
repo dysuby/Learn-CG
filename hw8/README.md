@@ -190,3 +190,7 @@ if (running) {
 
 
 ![](images/3.png)
+
+
+
+![](doc/sample.gif)

@@ -227,3 +227,7 @@ lightPos.z = 2.0f;
 **切换到 *Gouraud Shading***
 
 ![3](./images/3.png)
+
+
+
+![](doc/sample.gif)
