@@ -50,7 +50,7 @@ while (!glfwWindowShouldClose(window)) {
 
 ### Bezier 曲线
 
-给定点 $P_0$、$P_1$、…、$P_n$，其贝塞尔曲线为
+给定点 P0、P1、…、Pn，其贝塞尔曲线为
 
 ![$${\mathbf  {B}}(t)=\sum _{{i=0}}^{n}{n \choose i}{\mathbf  {P}}_{i}(1-t)^{{n-i}}t^{i}={n \choose 0}{\mathbf  {P}}_{0}(1-t)^{n}t^{{0}}+{n \choose 1}{\mathbf  {P}}_{1}(1-t)^{{n-1}}t^{{1}}+\cdots +{n \choose n-1}{\mathbf  {P}}_{{n-1}}(1-t)^{{1}}t^{{n-1}}+{n \choose n}{\mathbf  {P}}_{n}(1-t)^{{0}}t^{n}{\mbox{ , }}t\in [0,1]$$](https://wikimedia.org/api/rest_v1/media/math/render/svg/c927f56552e184c4debebc83a08dc79896052a14)
 
@@ -128,7 +128,7 @@ void mouseCallback(GLFWwindow* window, int button, int action, int mods) {
 
 ![$b_{{i,n}}(t)={n \choose i}(1-t)^{{n-i}}t^{i}$](https://wikimedia.org/api/rest_v1/media/math/render/svg/c379c4e9499ff9985fb3226573303d3baf8438ba)
 
-曲线在 $t_0$ 点上可以用递推关系式运算
+曲线在 ![$t_{0}$](https://wikimedia.org/api/rest_v1/media/math/render/svg/02d3006c4190b1939b04d9b9bb21006fb4e6fa4a) 点上可以用递推关系式运算
 
 ![$$\beta _{i}^{{(0)}}:=\beta _{i}{\mbox{ , }}i=0,\ldots ,n$$](https://wikimedia.org/api/rest_v1/media/math/render/svg/2fc8fa1843a2b22addc72880c7ccf2d68a19b1dc)
 
