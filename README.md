@@ -18,3 +18,6 @@
 
 7. Shadow Mapping
    ![](hw7/doc/sample.gif)
+
+8. Bezier Curve
+   ![](hw8/doc/sample.gif)
