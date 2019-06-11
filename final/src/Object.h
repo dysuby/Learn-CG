@@ -21,10 +21,10 @@ public:
 
 	~Object();
 
-	// 单个cube渲染
+	// 单个Cube渲染
 	void Render(int vertices_num);
 
-	// 多个cube渲染
+	// 多个Cube渲染
 	void Render(vector<glm::vec3> positions);
 
 
