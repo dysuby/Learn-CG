@@ -30,7 +30,6 @@ public:
 
 private:
 	unsigned int VAO, VBO;
-	vector<float> vertices;
 	Shader *shader;
 };
 

@@ -1,13 +1,13 @@
 #include "Object.h"
 
-Object::Object(vector<float> _vertices, Shader *_shader) : vertices(_vertices), shader(_shader) {
+Object::Object(vector<float> _vertices, Shader *_shader) : shader(_shader) {
 	// 生成
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	// 绑定 VAO, VBO
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STREAM_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(float), _vertices.data(), GL_STREAM_DRAW);
 	// 位置属性
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
