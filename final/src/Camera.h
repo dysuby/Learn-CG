@@ -58,14 +58,12 @@ public:
 		Up = glm::normalize(glm::cross(Right, Front));
 	}
 
-	// 摄像机属性
 	glm::vec3 Position;
 	glm::vec3 Front;
 	glm::vec3 Up;
 	glm::vec3 Right;
 	glm::vec3 WorldUp;
 
-	// 欧拉角度
 	float Yaw;
 	float Pitch;
 };
