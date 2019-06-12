@@ -10,7 +10,7 @@
 using std::vector;
 
 vector<float> cubeVertices {
-	// positions		  // normals		   // texture
+	// positions		 // normals		  // texture
 	-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
 	 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
 	 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,

@@ -21,10 +21,10 @@ public:
 
 	~Object();
 
-	// å•ä¸ªCubeæ¸²æŸ“
+	// µ¥¸öcubeäÖÈ¾
 	void Render(int vertices_num);
 
-	// å¤šä¸ªCubeæ¸²æŸ“
+	// ¶à¸öcubeäÖÈ¾
 	void Render(vector<glm::vec3> positions);
 
 
