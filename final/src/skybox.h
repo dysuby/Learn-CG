@@ -30,12 +30,12 @@ public:
 	void loadMap() {
 		vector<std::string> faces
 		{
-			"../../final/assets/sky-right.jpg",
-			"../../final/assets/sky-left.jpg",
-			"../../final/assets/sky-top.jpg",
-			"../../final/assets/sky-bottom.jpg",
-			"../../final/assets/sky-front.jpg",
-			"../../final/assets/sky-back.jpg"
+			"assets/sky-right.jpg",
+			"assets/sky-left.jpg",
+			"assets/sky-top.jpg",
+			"assets/sky-bottom.jpg",
+			"assets/sky-front.jpg",
+			"assets/sky-back.jpg"
 		};
 		cubemapTexture = loadCubemap(faces);
 	}

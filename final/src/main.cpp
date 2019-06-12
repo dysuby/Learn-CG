@@ -98,9 +98,9 @@ int main() {
 	glEnable(GL_DEPTH_TEST);
 
 	// 加载纹理
-	unsigned int groundTexture = loadTexture("../../final/assets/wood.png");
-	unsigned int wallTexture = loadTexture("../../final/assets/wood.png");
-	unsigned int boxTexture = loadTexture("../../final/assets/box.jpg");
+	unsigned int groundTexture = loadTexture("assets/wood.png");
+	unsigned int wallTexture = loadTexture("assets/wood.png");
+	unsigned int boxTexture = loadTexture("assets/box.jpg");
 
 	// configure depth map FBO
 	// -----------------------
@@ -126,9 +126,9 @@ int main() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	// 创建着色器
-	Shader shader("../../final/shader.vs.glsl", "../../final/shader.fs.glsl");
-	Shader depthShader("../../final/depth.vs.glsl", "../../final/depth.fs.glsl");
-	Shader skyboxShader("../../final/skyboxShader.vs.glsl", "../../final/skyboxShader.fs.glsl");
+	Shader shader("glsl/shader.vs.glsl", "glsl/shader.fs.glsl");
+	Shader depthShader("glsl/depth.vs.glsl", "glsl/depth.fs.glsl");
+	Shader skyboxShader("glsl/skyboxShader.vs.glsl", "glsl/skyboxShader.fs.glsl");
 
 	// 创建对象
 	Object ground(planeVertices, &shader, groundTexture);
@@ -143,7 +143,7 @@ int main() {
 	shader.setInt("diffuseTexture", 0);
 	shader.setInt("shadowMap", 1);
 
-	glm::vec3 lightPos(-2.0f, 10.0f, -1.0f);
+	glm::vec3 lightPos(-5.0f, 7.0f, 3.0f);
 
 	// 渲染
 	while (!glfwWindowShouldClose(window)) {
