@@ -17,19 +17,17 @@ using namespace std;
 
 class Object {
 public:
-	Object(vector<float> _vertices, Shader *_shader);
+	Object(vector<float> _vertices, Shader *_shader, unsigned int _Texture);
 
 	~Object();
 
-	// 单个cube渲染
-	void Render(int vertices_num);
-
-	// 多个cube渲染
-	void Render(vector<glm::vec3> positions);
+	// 渲染
+	void Render(vector<glm::vec3> positions, int vertices_num);
 
 
 private:
 	unsigned int VAO, VBO;
+	unsigned int Texture;
 	Shader *shader;
 };
 

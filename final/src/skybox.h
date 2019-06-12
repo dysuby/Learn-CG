@@ -2,7 +2,7 @@
 #ifndef SKYBOX_H
 #define SKYBOX_H
 #include "Shader.h"
-#include "Bound.h"
+#include "Vertices.h"
 #include "stb_image.h"
 #include <iostream>
 
@@ -30,12 +30,12 @@ public:
 	void loadMap() {
 		vector<std::string> faces
 		{
-			"sky-right.jpg",
-			"sky-left.jpg",
-			"sky-top.jpg",
-			"sky-bottom.jpg",
-			"sky-front.jpg",
-			"sky-back.jpg"
+			"../../final/assets/sky-right.jpg",
+			"../../final/assets/sky-left.jpg",
+			"../../final/assets/sky-top.jpg",
+			"../../final/assets/sky-bottom.jpg",
+			"../../final/assets/sky-front.jpg",
+			"../../final/assets/sky-back.jpg"
 		};
 		cubemapTexture = loadCubemap(faces);
 	}

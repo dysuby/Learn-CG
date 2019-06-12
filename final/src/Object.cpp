@@ -1,6 +1,6 @@
 #include "Object.h"
 
-Object::Object(vector<float> _vertices, Shader *_shader) : shader(_shader) {
+Object::Object(vector<float> _vertices, Shader *_shader, unsigned int _Texture) : shader(_shader), Texture(_Texture) {
 	// 生成
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -27,23 +27,18 @@ Object::~Object() {
 	glDeleteBuffers(1, &VBO);
 }
 
-// 单个cube渲染
-void Object::Render(int vertices_num) {
-	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, vertices_num);
-	glBindVertexArray(0);
-}
-
-// 多个cube渲染
-void Object::Render(vector<glm::vec3> positions) {
+// 渲染
+void Object::Render(vector<glm::vec3> positions, int vertices_num) {
 	// 渲染多个立方体
 	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, Texture);
 	for (int i = 0; i < positions.size(); i++) {
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, positions[i]);
 		shader->setMat4("model", model);
 
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDrawArrays(GL_TRIANGLES, 0, vertices_num);
 	}
 	glBindVertexArray(0);
 }
