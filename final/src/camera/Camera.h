@@ -45,14 +45,19 @@ public:
 	void moveDown(GLfloat const distance) {
 		Position -= Up * distance;
 	}
+
 	void rotate(GLfloat const yaw, GLfloat const pitch) {
 		Yaw += yaw;
 		Pitch += pitch;
-		float radian_yaw = glm::radians(Yaw), radian_pitch = glm::radians(Pitch);
+        Pitch = glm::min(89.0f, glm::max(Pitch, -89.0f));
 		updateCameraVectors();
 	}
+
 	void updateCameraVectors(){
-		glm::vec3 front = glm::vec3(cos(Yaw) * cos(Pitch), sin(Pitch), sin(Yaw) * cos(Pitch));
+        glm::vec3 front;
+        front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+        front.y = sin(glm::radians(Pitch));
+        front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
 		Front = glm::normalize(front);
 		Right = glm::normalize(glm::cross(Front, WorldUp));
 		Up = glm::normalize(glm::cross(Right, Front));

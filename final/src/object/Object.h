@@ -17,18 +17,18 @@ using namespace std;
 
 class Object {
 public:
-	Object(vector<float> _vertices, Shader *_shader, unsigned int _Texture);
+	Object(vector<float> _vertices, vector<unsigned int> _textures);
 
 	~Object();
 
 	// ‰÷»æ
-	void Render(vector<glm::vec3> positions, int vertices_num);
+	void Render(vector<glm::vec3> positions, Shader *shader, bool renderShadow = true);
 
 
 private:
 	unsigned int VAO, VBO;
-	unsigned int Texture;
-	Shader *shader;
+    vector<unsigned int> textures;
+	size_t vertices_num;
 };
 
 #endif // !CUBE_H
