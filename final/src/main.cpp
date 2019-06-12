@@ -31,8 +31,8 @@ float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 
-const float movementSpeed = 5.0f;
-const float mouseSensitivity = 0.1f;
+const float movementSpeed = 3.0f;
+const float mouseSensitivity = 0.2f;
 
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
@@ -40,17 +40,17 @@ float lastFrame = 0.0f;
 void processInput(GLFWwindow *window) {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-    else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera.moveForward(deltaTime * movementSpeed);
-    else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		camera.moveBack(deltaTime * movementSpeed);
-    else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 		camera.moveLeft(deltaTime * movementSpeed);
-    else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.moveRight(deltaTime * movementSpeed);
-    else if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		camera.moveUp(deltaTime * movementSpeed);
-    else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		camera.moveDown(deltaTime * movementSpeed);
 }
 
@@ -67,7 +67,6 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 
 	camera.rotate(xoffset * mouseSensitivity, yoffset * mouseSensitivity);
 }
-
 
 int main() {
 	// 初始化 GLFW
@@ -108,10 +107,11 @@ int main() {
 
 
     // 加载纹理
-    unsigned int groundTexture = loadTexture("assets/wood.png");
-    unsigned int wallTexture = loadTexture("assets/wood.png");
+    unsigned int groundTexture = loadTexture("assets/grass.png");
+    unsigned int wallTexture = loadTexture("assets/wall.png");
     unsigned int boxTexture = loadTexture("assets/box.jpg");
-
+	unsigned int dirtTexture = loadTexture("assets/dirt.png");
+	unsigned int endTexture = loadTexture("assets/end.png");
 
     // Configure depth map FBO
     const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
@@ -140,15 +140,22 @@ int main() {
     Object ground(planeVertices, vector<unsigned int>{groundTexture, depthMap});
     Object wall(cubeVertices, vector<unsigned int>{wallTexture, depthMap});
     Object box(cubeVertices, vector<unsigned int>{boxTexture, depthMap});
+	Object dirt(cubeVertices, vector<unsigned int>{dirtTexture, depthMap});
+	Object end(planeVertices, vector<unsigned int>{endTexture, depthMap});
 
 
     //创建天空盒
     Skybox skybox(&skyboxShader);
 
+
 	// 配置着色器
 	shader.use();
 	shader.setInt("diffuseTexture", 0);
 	shader.setInt("shadowMap", 1);
+
+
+	// 创建地图
+	createMap();
 
 	glm::vec3 lightPos(-2.0f, 7.0f, 2.0f);
 
@@ -181,9 +188,13 @@ int main() {
 
         ground.Render(groundPositions, &depthShader, false);
 
+		dirt.Render(dirtPositions, &depthShader, false);
+
         wall.Render(wallPositions, &depthShader, false);
 
-        box.Render(boxPositions, &depthShader);
+        box.Render(boxPositions, &depthShader, false);
+
+		end.Render(endPositions, &depthShader, false);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -207,9 +218,13 @@ int main() {
 
         ground.Render(groundPositions, &shader);
 
+		dirt.Render(dirtPositions, &shader);
+
         wall.Render(wallPositions, &shader);
 
         box.Render(boxPositions, &shader);
+
+		end.Render(endPositions, &shader);
         
 		// 渲染天空盒
 		view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
