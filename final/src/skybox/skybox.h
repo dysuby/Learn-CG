@@ -1,9 +1,9 @@
 #pragma once
 #ifndef SKYBOX_H
 #define SKYBOX_H
-#include "Shader.h"
-#include "Vertices.h"
-#include "stb_image.h"
+#include "../shader/Shader.h"
+#include "../object/constants/Vertices.h"
+#include "../stb_image.h"
 #include <iostream>
 
 class Skybox
