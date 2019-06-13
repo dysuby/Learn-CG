@@ -28,7 +28,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 // ³õÊ¼»¯ÉãÏñ»ú
-Camera camera(glm::vec3(0.0f, 3.0f, 7.0f));
+Camera camera(glm::vec3(0.0f, 7.0f, 7.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
