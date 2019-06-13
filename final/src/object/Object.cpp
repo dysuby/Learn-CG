@@ -18,18 +18,18 @@ Object::Object() {}
 
 void Object::Render(Shader *_shader, bool renderShadow) {
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textures[0]);  // ����
+    glBindTexture(GL_TEXTURE_2D, textures[0]);  // 纹理
 
     if (renderShadow) {
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, textures[1]);  // ��Ӱ
+        glBindTexture(GL_TEXTURE_2D, textures[1]);  // 阴影
     }
 
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, position);
     _shader->setMat4("model", model);
 
-    // ��Ⱦ������
+    // 渲染
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, vertices_num);
     glBindVertexArray(0);
@@ -59,20 +59,20 @@ void renderObjects(vector<Object> _objects, Shader *_shader,
 }
 
 void setBuffer(vector<float> _vertices, unsigned int _VAO, unsigned int _VBO) {
-    // �� VAO, VBO
+    // VAO, VBO
     glBindVertexArray(_VAO);
     glBindBuffer(GL_ARRAY_BUFFER, _VBO);
     glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(float),
                  _vertices.data(), GL_STREAM_DRAW);
-    // λ������
+    // 位置
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                           (void *)0);
-    // ��������
+    // 法线
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                           (void *)(3 * sizeof(float)));
-    // ��������
+    // 纹理
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                           (void *)(6 * sizeof(float)));
