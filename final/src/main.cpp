@@ -89,6 +89,21 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
     camera.rotate(xoffset * mouseSensitivity, yoffset * mouseSensitivity);
 }
 
+void renderTitle() {
+    static Model font("assets/title.fbx");
+    static Shader fontShader("glsl/font.vs.glsl", "glsl/font.fs.glsl");
+    glm::mat4 projection = glm::perspective(
+        glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f,
+        100.0f);
+
+    fontShader.use();
+    fontShader.setMat4("view", camera.GetViewMatrix());
+    fontShader.setMat4("projection", projection);
+    glm::mat4 model(1.0f);
+    model = glm::translate(model, glm::vec3(0.0f, 5.0f, -5.0f));
+    fontShader.setMat4("model", model);
+    font.Draw(fontShader, 0, false);
+}
 
 int main() {
     // 初始化 GLFW
@@ -131,8 +146,6 @@ int main() {
                         "glsl/skyboxShader.fs.glsl");
     Shader playerShader("glsl/player.vs.glsl", "glsl/player.fs.glsl");
 
-    // load models
-    // -----------
 
     // 加载纹理
     unsigned int groundTexture = loadTexture("assets/grass.png");
@@ -189,6 +202,7 @@ int main() {
     // player
     Player* player = Player::getInstance("assets/sheep.obj",
                                          SCR_WIDTH, SCR_HEIGHT, depthMap);
+
 
     manager.init(&wall, &box, player);
 
@@ -277,6 +291,8 @@ int main() {
         // 渲染天空盒
         view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
         skybox.render(view, projection);
+
+        renderTitle();
 
         // 检查并调用事件，交换缓冲
         glfwSwapBuffers(window);
