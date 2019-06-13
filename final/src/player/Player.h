@@ -6,6 +6,13 @@
 
 #include "models/Model.h"
 
+enum Direction {
+    Forward,
+    Back,
+    Left,
+    Right
+};
+
 class Player: public Model {
 public:
 
@@ -18,7 +25,7 @@ public:
     void setModel(glm::mat4 _model);
     void setProjection(glm::mat4 _projection);
 
-    float dir;
+    Direction dir;
 
     glm::vec3 position;
 

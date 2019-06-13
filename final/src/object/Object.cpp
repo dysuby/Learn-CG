@@ -44,7 +44,6 @@ vector<Object> createObjects(vector<float> _vertices,
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     setBuffer(_vertices, VAO, VBO);
-    cout << VAO << endl;
     for (int i = 0; i < positions.size(); i++) {
         objects.push_back(Object(_vertices, _textures, positions[i], VAO, VBO));
     }

@@ -66,13 +66,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action,
                   int mods) {
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) restart = true;
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        manager.playerMove('W');
+        manager.playerMove(Forward);
     else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-        manager.playerMove('A');
+        manager.playerMove(Left);
     else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        manager.playerMove('S');
+        manager.playerMove(Back);
     else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-        manager.playerMove('D');
+        manager.playerMove(Right);
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
@@ -88,6 +88,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 
     camera.rotate(xoffset * mouseSensitivity, yoffset * mouseSensitivity);
 }
+
 
 int main() {
     // ≥ı ºªØ GLFW

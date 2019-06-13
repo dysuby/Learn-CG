@@ -22,15 +22,12 @@ public:
         this->walls = walls;
         this->boxes = boxes;
         this->player = player;
-        playerDirection = 'W';
-		rotate = 180.0f;
     }
 
-	void playerMove(const char direction) {
-		if (playerDirection != direction) {
-			player->dir = playerRotate(direction);
-		}
-		else {
+	void playerMove(Direction direction) {
+		if (player->dir != direction) {
+            player->dir = direction;
+		} else {
 			glm::vec3 nextPos = getNextPos(player->position, direction);
 			int obj = ObjectInPos(nextPos);
 			switch (obj) {
@@ -69,19 +66,19 @@ public:
         return 0;
     }
 
-	glm::vec3 getNextPos(const glm::vec3 curPos, const char direction) {
+	glm::vec3 getNextPos(const glm::vec3 curPos, Direction direction) {
         glm::vec3 nextPos = curPos;
         switch (direction) {
-        case 'A':
+        case Left:
             nextPos.x -= 1.0f;
             break;
-        case 'D':
+        case Right:
             nextPos.x += 1.0f;
             break;
-        case 'W':
+        case Forward:
             nextPos.z -= 1.0f;
             break;
-        case 'S':
+        case Back:
             nextPos.z += 1.0f;
             break;
         default:
@@ -90,55 +87,14 @@ public:
         return nextPos;
     }
 
-	bool moveBox(const glm::vec3 boxPos, const char direction) {
+	bool moveBox(const glm::vec3 boxPos, Direction direction) {
         for (int i = 0; i < boxes->size(); ++i) {
             if (boxPos.x == (*boxes)[i].position.x && boxPos.z == (*boxes)[i].position.z) {
-                switch (direction) {
-                case 'A':
-                    (*boxes)[i].position.x -= 1.0f;
-                    break;
-                case 'D':
-                    (*boxes)[i].position.x += 1.0f;
-                    break;
-                case 'W':
-                    (*boxes)[i].position.z -= 1.0f;
-                    break;
-                case 'S':
-                    (*boxes)[i].position.z += 1.0f;
-                    break;
-                default:
-                    break;
-                }
+                (*boxes)[i].position = getNextPos((*boxes)[i].position, direction);
                 return true;
             }
         }
         return false;
-    }
-
-	float playerRotate(const char direction) {
-        if (playerDirection == direction) {
-			return rotate;
-        }
-        else {
-            switch (direction){
-            case 'S':
-				rotate = 0.0f;
-				break;
-			case 'D':
-				rotate = 90.0f;
-				break;
-			case 'W':
-				rotate = 180.0f;
-				break;
-			case 'A':
-				rotate = 270.0f;
-				break;
-            default:
-                break;
-            }
-            playerDirection = direction;
-            return rotate;
-        }
     }
 	
     void printObjectsPos(vector<Object>* objs) {
@@ -159,8 +115,7 @@ private:
 	vector<Object> * walls;
 	vector<Object> * boxes;
 	Player * player;
-	char playerDirection;
-	float rotate;
+	Direction playerDirection;
 };
 
 
