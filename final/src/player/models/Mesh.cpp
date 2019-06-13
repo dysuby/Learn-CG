@@ -5,18 +5,19 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture
     this->vertices = vertices;
     this->indices = indices;
     this->textures = textures;
-
+    
     // now that we have all the required data, set the vertex buffers and its attribute pointers.
     setupMesh();
 }
 
-void Mesh::Draw(Shader shader) {
+void Mesh::Draw(Shader shader, unsigned int depthMap, bool renderShadow) {
     // bind appropriate textures
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
     unsigned int normalNr = 1;
     unsigned int heightNr = 1;
-    for (unsigned int i = 0; i < textures.size(); i++) {
+    unsigned int i;
+    for (i = 0; i < textures.size(); i++) {
         glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
         // retrieve texture number (the N in diffuse_textureN)
         string number;
@@ -34,6 +35,12 @@ void Mesh::Draw(Shader shader) {
         glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
         // and finally bind the texture
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
+    }
+
+    if (renderShadow) {
+        shader.setInt("shadowMap", i);
+        glActiveTexture(GL_TEXTURE0 + i);
+        glBindTexture(GL_TEXTURE_2D, depthMap);  // ÒõÓ°
     }
 
     // draw mesh
@@ -72,12 +79,6 @@ void Mesh::setupMesh() {
     // vertex texture coords
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
-    // vertex tangent
-    glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
-    // vertex bitangent
-    glEnableVertexAttribArray(4);
-    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
 
     glBindVertexArray(0);
 }

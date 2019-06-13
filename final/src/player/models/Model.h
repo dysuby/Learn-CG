@@ -15,8 +15,8 @@
 #include <assimp/postprocess.h>
 
 #include "Mesh.h"
-#include "../shader/Shader.h"
-#include "../utils/utils.h"
+#include "../../shader/Shader.h"
+#include "../../utils/utils.h"
 
 using namespace std;
 
@@ -33,7 +33,7 @@ public:
     Model(string const &path, bool gamma = false);
 
     // draws the model, and thus all its meshes
-    void Draw(Shader shader);
+    void Draw(Shader shader, unsigned int depthMap, bool renderShadow);
 
 private:
 
@@ -44,8 +44,7 @@ private:
     void processNode(aiNode *node, const aiScene *scene);
 
     Mesh processMesh(aiMesh *mesh, const aiScene *scene);
-
-
+    
     // checks all material textures of a given type and loads the textures if they're not loaded yet.
     // the required info is returned as a Texture struct.
     vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName);

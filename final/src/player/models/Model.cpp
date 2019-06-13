@@ -5,9 +5,9 @@ Model::Model(string const &path, bool gamma) : gammaCorrection(gamma) {
 }
 
 
-void Model::Draw(Shader shader) {
+void Model::Draw(Shader shader, unsigned int depthMap, bool renderShadow) {
     for (unsigned int i = 0; i < meshes.size(); i++)
-        meshes[i].Draw(shader);
+        meshes[i].Draw(shader, depthMap, renderShadow);
 }
 
 
@@ -78,16 +78,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
         else {
             vertex.TexCoords = glm::vec2(0.0f, 0.0f);
         }
-        // tangent
-        vector.x = mesh->mTangents[i].x;
-        vector.y = mesh->mTangents[i].y;
-        vector.z = mesh->mTangents[i].z;
-        vertex.Tangent = vector;
-        // bitangent
-        vector.x = mesh->mBitangents[i].x;
-        vector.y = mesh->mBitangents[i].y;
-        vector.z = mesh->mBitangents[i].z;
-        vertex.Bitangent = vector;
+
         vertices.push_back(vertex);
     }
     // now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
