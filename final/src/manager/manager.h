@@ -23,46 +23,47 @@ public:
         this->boxes = boxes;
         this->player = player;
         playerDirection = 'W';
+		rotate = 180.0f;
     }
 
 	void playerMove(const char direction) {
-        cout << "before move, dir: " << direction << endl;
-        glm::vec3 nextPos = getNextPos(player->position, direction);
-        int obj = ObjectInPos(nextPos);
-        cout << "objInPos: " << obj << endl;
-        switch (obj) {
-        case 0:
-            player->position = nextPos;
-            cout << "player current pos:" << player->position.x << ' ' << player->position.z << endl;
-            break;
-        case 2: {
-            cout << "move box before: " << endl;
-            // printObjectsPos(boxes);
-            glm::vec3 boxNextPos = getNextPos(nextPos, direction);
-            int nextObj = ObjectInPos(boxNextPos);
-            cout << "boxNextPos: " << nextObj << endl;
-            if (!nextObj) {
-                moveBox(nextPos, direction);
-                player->position = nextPos;
-            }
-            cout << "move box after: " << endl;
-            // printObjectsPos(boxes);
-            break;
-        }
-        case 1:
-            break;
-        default:
-            break;
-        }
+		if (playerDirection != direction) {
+			player->dir = playerRotate(direction);
+		}
+		else {
+			glm::vec3 nextPos = getNextPos(player->position, direction);
+			int obj = ObjectInPos(nextPos);
+			switch (obj) {
+			case 0:
+				player->position = nextPos;
+				break;
+			case 2: {
+				// printObjectsPos(boxes);
+				glm::vec3 boxNextPos = getNextPos(nextPos, direction);
+				int nextObj = ObjectInPos(boxNextPos);
+				if (!nextObj) {
+					moveBox(nextPos, direction);
+					player->position = nextPos;
+				}
+				// printObjectsPos(boxes);
+				break;
+			}
+			case 1:
+				break;
+			default:
+				break;
+			}
+		}
+        
     }
 
-	int ObjectInPos(const glm::vec3 pos) {
+	int ObjectInPos(glm::vec3 pos) {
         for (int i = 0; i < walls->size(); ++i) {
-            if (pos == (*walls)[i].position)
+            if (pos.x == (*walls)[i].position.x && pos.z == (*walls)[i].position.z)
                 return 1;
         }
         for (int i = 0; i < boxes->size(); ++i) {
-            if (pos == (*boxes)[i].position)
+            if (pos.x == (*boxes)[i].position.x && pos.z == (*boxes)[i].position.z)
                 return 2;
         }
         return 0;
@@ -70,8 +71,6 @@ public:
 
 	glm::vec3 getNextPos(const glm::vec3 curPos, const char direction) {
         glm::vec3 nextPos = curPos;
-        cout << curPos.x << ' ' << curPos.z << endl;
-
         switch (direction) {
         case 'A':
             nextPos.x -= 1.0f;
@@ -88,13 +87,12 @@ public:
         default:
             break;
         }
-        cout << nextPos.x << ' ' << nextPos.z << endl;
         return nextPos;
     }
 
 	bool moveBox(const glm::vec3 boxPos, const char direction) {
         for (int i = 0; i < boxes->size(); ++i) {
-            if (boxPos == (*boxes)[i].position) {
+            if (boxPos.x == (*boxes)[i].position.x && boxPos.z == (*boxes)[i].position.z) {
                 switch (direction) {
                 case 'A':
                     (*boxes)[i].position.x -= 1.0f;
@@ -119,78 +117,27 @@ public:
 
 	float playerRotate(const char direction) {
         if (playerDirection == direction) {
-            return 0.0f;
+			return rotate;
         }
         else {
-            float angle = 0.0f;
-            switch (playerDirection)
-            {
-            case 'A':
-                switch (direction) {
-                case 'D':
-                    angle = 180.0f;
-                    break;
-                case 'W':
-                    angle = 90.0f;
-                    break;
-                case 'S':
-                    angle = -90.0f;
-                    break;
-                default:
-                    angle = 0.0f;
-                    break;
-                }
-            case 'D':
-                switch (direction) {
-                case 'A':
-                    angle = 180.0f;
-                    break;
-                case 'S':
-                    angle = 90.0f;
-                    break;
-                case 'W':
-                    angle = -90.0f;
-                    break;
-                default:
-                    angle = 0.0f;
-                    break;
-                }
-            case 'W':
-                switch (direction) {
-                case 'S':
-                    angle = 180.0f;
-                    break;
-                case 'D':
-                    angle = 90.0f;
-                    break;
-                case 'A':
-                    angle = -90.0f;
-                    break;
-                default:
-                    angle = 0.0f;
-                    break;
-                }
+            switch (direction){
             case 'S':
-                switch (direction) {
-                case 'W':
-                    angle = 180.0f;
-                    break;
-                case 'A':
-                    angle = 90.0f;
-                    break;
-                case 'D':
-                    angle = -90.0f;
-                    break;
-                default:
-                    angle = 0.0f;
-                    break;
-                }
+				rotate = 0.0f;
+				break;
+			case 'D':
+				rotate = 90.0f;
+				break;
+			case 'W':
+				rotate = 180.0f;
+				break;
+			case 'A':
+				rotate = 270.0f;
+				break;
             default:
-                angle = 0.0f;
                 break;
             }
             playerDirection = direction;
-            return angle;
+            return rotate;
         }
     }
 	
@@ -213,6 +160,7 @@ private:
 	vector<Object> * boxes;
 	Player * player;
 	char playerDirection;
+	float rotate;
 };
 
 
