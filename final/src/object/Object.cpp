@@ -65,6 +65,8 @@ Object::Object(vector<float> _vertices, vector<unsigned int> _textures, glm::vec
 	}
 }
 
+Object::Object(){}
+
 void Object::Render(Shader *_shader, bool renderShadow) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textures[0]);  // Œ∆¿Ì

@@ -14,6 +14,7 @@
 #include "object/constants/Positions.h"
 #include "skybox/skybox.h"
 #include "utils/utils.h"
+#include "manager/manager.h"
 
 using namespace std;
 
@@ -37,6 +38,9 @@ const float mouseSensitivity = 0.2f;
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
+// 创建manager
+Manager manager = Manager();
+
 void processInput(GLFWwindow *window) {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
@@ -52,6 +56,17 @@ void processInput(GLFWwindow *window) {
 		camera.moveUp(deltaTime * movementSpeed);
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		camera.moveDown(deltaTime * movementSpeed);
+}
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+		manager.playerMove('W');
+	else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		manager.playerMove('A');
+	else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		manager.playerMove('S');
+	else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		manager.playerMove('D');
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
@@ -86,6 +101,7 @@ int main() {
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetKeyCallback(window, key_callback);
 
 	//// 告知 GLFW 捕捉鼠标动作
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -112,6 +128,7 @@ int main() {
     unsigned int boxTexture = loadTexture("assets/box.jpg");
 	unsigned int dirtTexture = loadTexture("assets/dirt.png");
 	unsigned int endTexture = loadTexture("assets/end.png");
+	unsigned int playerTexture = loadTexture("assets/ground.jpg");
 
     // Configure depth map FBO
     const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
@@ -150,6 +167,10 @@ int main() {
 	vector<Object> dirt = createObjects(cubeVertices, vector<unsigned int>{dirtTexture, depthMap}, dirtPositions);
 	vector<Object> end = createObjects(planeVertices, vector<unsigned int>{endTexture, depthMap}, endPositions);
 
+	//player
+	Object player(cubeVertices, vector<unsigned int>{playerTexture, depthMap}, glm::vec3(-0.5f, 0.0f, 0.5f));
+
+	manager.init(&wall, &box, &player);
 
     //创建天空盒
     Skybox skybox(&skyboxShader);
@@ -205,7 +226,7 @@ int main() {
 		renderObjects(wall, &depthShader, false);
 		renderObjects(box, &depthShader, false);
 		renderObjects(end, &depthShader, false);
-
+		player.Render(&depthShader, false);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         // reset viewport
@@ -241,7 +262,7 @@ int main() {
 		renderObjects(wall, &shader);
 		renderObjects(box, &shader);
 		renderObjects(end, &shader);
-        
+		player.Render(&shader);
 		// 渲染天空盒
 		view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
 		skybox.render(view, projection);

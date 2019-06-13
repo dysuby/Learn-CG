@@ -20,12 +20,12 @@ class Object {
 public:
 	//Object(vector<float> _vertices, vector<unsigned int> _textures);
 	Object(vector<float> _vertices, vector<unsigned int> _textures, glm::vec3 _position, unsigned int _VAO = 0, unsigned int _VBO = 0);
-
+	Object();
 	/*~Object();*/
 
 	// ‰÷»æ
 	//void Render(vector<glm::vec3> positions, Shader *shader, bool renderShadow = true);
-	void Render(Shader *shader, bool renderShadow);
+	void Render(Shader *shader, bool renderShadow = true);
 
 	glm::vec3 position;
 
