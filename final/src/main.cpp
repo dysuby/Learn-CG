@@ -26,7 +26,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 // 初始化摄像机
-Camera camera(glm::vec3(0.0f, 5.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 3.0f, 7.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -135,13 +135,20 @@ int main() {
     glReadBuffer(GL_NONE);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	// 创建地图
+	createMap();
 
     // 创建对象
-    Object ground(planeVertices, vector<unsigned int>{groundTexture, depthMap});
+    /*Object ground(planeVertices, vector<unsigned int>{groundTexture, depthMap});
     Object wall(cubeVertices, vector<unsigned int>{wallTexture, depthMap});
     Object box(cubeVertices, vector<unsigned int>{boxTexture, depthMap});
 	Object dirt(cubeVertices, vector<unsigned int>{dirtTexture, depthMap});
-	Object end(planeVertices, vector<unsigned int>{endTexture, depthMap});
+	Object end(planeVertices, vector<unsigned int>{endTexture, depthMap});*/
+	vector<Object> ground = createObjects(planeVertices, vector<unsigned int>{groundTexture, depthMap}, groundPositions);
+	vector<Object> wall = createObjects(cubeVertices, vector<unsigned int>{wallTexture, depthMap}, wallPositions);
+	vector<Object> box = createObjects(cubeVertices, vector<unsigned int>{boxTexture, depthMap}, boxPositions);
+	vector<Object> dirt = createObjects(cubeVertices, vector<unsigned int>{dirtTexture, depthMap}, dirtPositions);
+	vector<Object> end = createObjects(planeVertices, vector<unsigned int>{endTexture, depthMap}, endPositions);
 
 
     //创建天空盒
@@ -153,9 +160,6 @@ int main() {
 	shader.setInt("diffuseTexture", 0);
 	shader.setInt("shadowMap", 1);
 
-
-	// 创建地图
-	createMap();
 
 	glm::vec3 lightPos(-2.0f, 7.0f, 2.0f);
 
@@ -186,15 +190,21 @@ int main() {
         glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT);
 
-        ground.Render(groundPositions, &depthShader, false);
+        /*ground.Render(groundPositions, &depthShader, false);
 
 		dirt.Render(dirtPositions, &depthShader, false);
-
+		s
         wall.Render(wallPositions, &depthShader, false);
 
         box.Render(boxPositions, &depthShader, false);
 
-		end.Render(endPositions, &depthShader, false);
+		end.Render(endPositions, &depthShader, false);*/
+
+		renderObjects(ground, &depthShader, false);
+		renderObjects(dirt, &depthShader, false);
+		renderObjects(wall, &depthShader, false);
+		renderObjects(box, &depthShader, false);
+		renderObjects(end, &depthShader, false);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -216,7 +226,7 @@ int main() {
         shader.setVec3("lightPos", lightPos);
         shader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
-        ground.Render(groundPositions, &shader);
+        /*ground.Render(groundPositions, &shader);
 
 		dirt.Render(dirtPositions, &shader);
 
@@ -224,7 +234,13 @@ int main() {
 
         box.Render(boxPositions, &shader);
 
-		end.Render(endPositions, &shader);
+		end.Render(endPositions, &shader);*/
+
+		renderObjects(ground, &shader);
+		renderObjects(dirt, &shader);
+		renderObjects(wall, &shader);
+		renderObjects(box, &shader);
+		renderObjects(end, &shader);
         
 		// 渲染天空盒
 		view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
