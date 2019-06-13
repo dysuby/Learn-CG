@@ -12,7 +12,7 @@ public:
     static Player *getInstance(const char *model_path, int SCR_WIDTH, int SCR_HEIGHT, unsigned int depthMap);
     static void DestroyInstance();
 
-    void render(Shader *shader, bool renderShadow = true);
+    void render(Shader *shader, glm::vec3 lightPos, bool renderShadow = true);
 
     void setView(glm::mat4 _view);
     void setModel(glm::mat4 _model);

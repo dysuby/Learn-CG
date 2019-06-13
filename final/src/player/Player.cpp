@@ -6,7 +6,7 @@ Player::Player(const char *model_path, int SCR_WIDTH, int SCR_HEIGHT, unsigned i
     view = glm::mat4(1.0f);
     depthMap = _depthMap;
     position = glm::vec3(-0.5f, -0.5f, 0.5f);
-    dir = 180.0f;
+    dir = 90.0f;
 }
 
 Player *Player::getInstance(const char *model_path, int SCR_WIDTH, int SCR_HEIGHT, unsigned int depthMap) {
@@ -29,15 +29,16 @@ void Player::setProjection(glm::mat4 _projection) {
     projection = _projection;
 }
 
-void Player::render(Shader *shader, bool renderShadow) {
+void Player::render(Shader *shader, glm::vec3 lightPos, bool renderShadow) {
     shader->setMat4("projection", projection);
     shader->setMat4("view", view);
+    shader->setVec3("lightPos", lightPos);
+
     model = glm::mat4(1.0f);
     model = glm::translate(model, position);
     model = glm::rotate(model, glm::radians(dir), glm::vec3(0.0f, 1.0f, 0.0f));
-    model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+    model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
     shader->setMat4("model", model);
     
-    //shader->setBool("useVertColor", true);
     this->Draw(*shader, depthMap, renderShadow);
 }

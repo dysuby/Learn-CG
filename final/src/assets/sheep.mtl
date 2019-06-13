@@ -10,9 +10,7 @@ Ks 0.000000 0.000000 0.000000
 illum 2
 Ns 0.000000
 Tr 1.000000
-map_Kd black.jpg
-map_Bump black.jpg
-map_Ks black.jpg
+
 
 
 
@@ -23,9 +21,7 @@ Ks 0.000000 0.000000 0.000000
 illum 2
 Ns 0.000000
 Tr 1.000000
-map_Kd brown.png
-map_Bump brown.png
-map_Ks brown.png
+
 
 
 
@@ -36,9 +32,7 @@ Ks 0.139608 0.139608 0.139608
 illum 2
 Ns 0.000000
 Tr 1.000000
-map_Kd darkbrown.png
-map_Bump darkbrown.png
-map_Ks darkbrown.png
+
 
 
 
@@ -49,9 +43,7 @@ Ks 0.062048 0.062048 0.062048
 illum 2
 Ns 0.000000
 Tr 1.000000
-map_Kd green.jpg
-map_Bump green.jpg
-map_Ks green.jpg
+
 
 
 
@@ -62,8 +54,6 @@ Ks 0.227789 0.227789 0.227789
 illum 2
 Ns 0.000000
 Tr 1.000000
-map_Kd white.jpg
-map_Bump white.jpg
-map_Ks white.jpg
+
 
 

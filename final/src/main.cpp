@@ -186,7 +186,7 @@ int main() {
                       endPositions);
 
     // player
-    Player* player = Player::getInstance("assets/nanosuit/nanosuit.obj",
+    Player* player = Player::getInstance("assets/sheep.obj",
                                          SCR_WIDTH, SCR_HEIGHT, depthMap);
 
     manager.init(&wall, &box, player);
@@ -239,7 +239,7 @@ int main() {
         renderObjects(box, &depthShader, false);
         renderObjects(end, &depthShader, false);
 
-        player->render(&depthShader, false);
+        player->render(&depthShader, lightPos, false);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -271,7 +271,7 @@ int main() {
 
         playerShader.use();
         player->setView(camera.GetViewMatrix());
-        player->render(&playerShader);
+        player->render(&playerShader, lightPos);
 
         // äÖÈ¾Ìì¿ÕºĞ
         view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
