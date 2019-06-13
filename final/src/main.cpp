@@ -100,7 +100,7 @@ int main() {
 
     // 创建一个窗口对象
     GLFWwindow* window =
-        glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "CG-Project", NULL, NULL);
+        glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Sokoban", NULL, NULL);
     if (window == NULL) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
