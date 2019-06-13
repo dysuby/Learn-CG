@@ -18,7 +18,9 @@ public:
     void setModel(glm::mat4 _model);
     void setProjection(glm::mat4 _projection);
 
-    void rotate(float degree);
+    float dir;
+
+    glm::vec3 position;
 
 private:
     Player(const char *model_path, int SCR_WIDTH, int SCR_HEIGHT, unsigned int depthMap);

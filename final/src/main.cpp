@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -186,12 +186,10 @@ int main() {
                       endPositions);
 
     // player
-    Object player(cubeVertices, vector<unsigned int>{playerTexture, depthMap},
-                  playerPosition);
     Player* player = Player::getInstance("assets/nanosuit/nanosuit.obj",
                                          SCR_WIDTH, SCR_HEIGHT, depthMap);
 
-    manager.init(&wall, &box, &player);
+    manager.init(&wall, &box, player);
 
     //´´½¨Ìì¿ÕºÐ
     Skybox skybox(&skyboxShader);

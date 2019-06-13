@@ -9,6 +9,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../object/Object.h"
 #include "../object/constants/Positions.h"
+#include "../player/Player.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ class Manager
 public:
     Manager() {}
 
-    void init(vector<Object>* walls, vector<Object>* boxes, Object* player = NULL) {
+    void init(vector<Object>* walls, vector<Object>* boxes, Player* player = NULL) {
         this->walls = walls;
         this->boxes = boxes;
         this->player = player;
@@ -210,7 +211,7 @@ public:
 private:
 	vector<Object> * walls;
 	vector<Object> * boxes;
-	Object * player;
+	Player * player;
 	char playerDirection;
 };
 
