@@ -8,6 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "object/Object.h"
+#include "object/constants/Positions.h"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ public:
 	bool moveBox(const glm::vec3 boxPos, const char direction);
 	float playerRotate(const char direction);
 	void printObjectsPos(vector<Object>* objs);
+	void resetObjsPos();
 
 private:
 	vector<Object> * walls;
@@ -37,6 +39,13 @@ void Manager::init(vector<Object>* walls, vector<Object>* boxes, Object* player)
 	this->boxes = boxes;
 	this->player = player;
 	playerDirection = 'W';
+}
+
+void Manager::resetObjsPos() {
+	for (int i = 0; i < boxes->size(); ++i) {
+		(*boxes)[i].position = boxPositions[i];
+	}
+	(*player).position = playerPosition;
 }
 
 void Manager::playerMove(const char direction) {

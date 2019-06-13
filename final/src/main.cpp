@@ -38,6 +38,9 @@ const float mouseSensitivity = 0.2f;
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
+// restart
+bool restart = false;
+
 // ´´½¨manager
 Manager manager = Manager();
 
@@ -59,6 +62,8 @@ void processInput(GLFWwindow *window) {
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+		restart = true;
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 		manager.playerMove('W');
 	else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
@@ -168,7 +173,7 @@ int main() {
 	vector<Object> end = createObjects(planeVertices, vector<unsigned int>{endTexture, depthMap}, endPositions);
 
 	//player
-	Object player(cubeVertices, vector<unsigned int>{playerTexture, depthMap}, glm::vec3(-0.5f, 0.0f, 0.5f));
+	Object player(cubeVertices, vector<unsigned int>{playerTexture, depthMap}, playerPosition);
 
 	manager.init(&wall, &box, &player);
 
@@ -196,6 +201,10 @@ int main() {
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		if (restart) {
+			manager.resetObjsPos();
+			restart = false;
+		}
         // 1. render depth of scene to texture (from light's perspective)
         // --------------------------------------------------------------
         glm::mat4 lightProjection, lightView;
