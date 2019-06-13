@@ -216,6 +216,8 @@ int main() {
 
     glm::vec3 lightPos(-2.0f, 7.0f, 2.0f);
 
+	//glEnable(GL_FRAMEBUFFER_SRGB);
+
     // ‰÷»æ
     while (!glfwWindowShouldClose(window)) {
         float currentFrame = glfwGetTime();

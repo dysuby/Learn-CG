@@ -76,5 +76,8 @@ void main()
     float shadow = ShadowCalculation(fs_in.FragPosLightSpace);                      
     vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color;    
     
+	float gamma = 1.5;
+    lighting = pow(lighting, vec3(1.0/gamma));
+
     FragColor = vec4(lighting, 1.0);
 }
