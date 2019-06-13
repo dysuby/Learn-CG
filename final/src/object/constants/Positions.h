@@ -65,7 +65,7 @@ vector<glm::vec3> endPositions{
 	glm::vec3(-2.5f,  0.005f, -0.5f)
 };
 
-glm::vec3 playerPosition = glm::vec3(-0.5f, 0.0f, 0.5f);
+glm::vec3 playerPosition = glm::vec3(-0.5f, -0.5f, 0.5f);
 // world space positions of plane cubes
 vector<glm::vec3> groundPositions;
 
