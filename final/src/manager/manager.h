@@ -25,33 +25,29 @@ public:
     }
 
 	void playerMove(Direction direction) {
-		if (player->dir != direction) {
-            player->dir = direction;
-		} else {
-			glm::vec3 nextPos = getNextPos(player->position, direction);
-			int obj = ObjectInPos(nextPos);
-			switch (obj) {
-			case 0:
+        player->dir = direction;
+		glm::vec3 nextPos = getNextPos(player->position, direction);
+		int obj = ObjectInPos(nextPos);
+		switch (obj) {
+		case 0:
+			player->position = nextPos;
+			break;
+		case 2: {
+			// printObjectsPos(boxes);
+			glm::vec3 boxNextPos = getNextPos(nextPos, direction);
+			int nextObj = ObjectInPos(boxNextPos);
+			if (!nextObj) {
+				moveBox(nextPos, direction);
 				player->position = nextPos;
-				break;
-			case 2: {
-				// printObjectsPos(boxes);
-				glm::vec3 boxNextPos = getNextPos(nextPos, direction);
-				int nextObj = ObjectInPos(boxNextPos);
-				if (!nextObj) {
-					moveBox(nextPos, direction);
-					player->position = nextPos;
-				}
-				// printObjectsPos(boxes);
-				break;
 			}
-			case 1:
-				break;
-			default:
-				break;
-			}
+			// printObjectsPos(boxes);
+			break;
 		}
-        
+		case 1:
+			break;
+		default:
+			break;
+		}
     }
 
 	int ObjectInPos(glm::vec3 pos) {
