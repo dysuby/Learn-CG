@@ -7,6 +7,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <ft2build.h>
+
 #include "camera/Camera.h"
 #include "manager/manager.h"
 #include "object/Object.h"
@@ -16,16 +18,16 @@
 #include "shader/Shader.h"
 #include "skybox/skybox.h"
 #include "utils/utils.h"
-
 #include "text/Text.h"
-#include <ft2build.h>
+#include "particle/particle.h"
+
 #include FT_FREETYPE_H  
 
 using namespace std;
 
 // 设置窗口大小
-const unsigned int SCR_WIDTH = 1380;
-const unsigned int SCR_HEIGHT = 800;
+const unsigned int SCR_WIDTH = 1080;
+const unsigned int SCR_HEIGHT = 700;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -153,6 +155,7 @@ int main() {
                         "glsl/skyboxShader.fs.glsl");
     Shader playerShader("glsl/player.vs.glsl", "glsl/player.fs.glsl");
 	Shader textShader("glsl/text.vs.glsl", "glsl/text.fs.glsl");
+	Shader particleShader("glsl/particle.vs.glsl", "glsl/particle.fs.glsl");
 
     // 加载纹理
     unsigned int groundTexture = loadTexture("assets/grass.png");
@@ -160,7 +163,6 @@ int main() {
     unsigned int boxTexture = loadTexture("assets/box.jpg");
     unsigned int dirtTexture = loadTexture("assets/dirt.png");
     unsigned int endTexture = loadTexture("assets/end.png");
-    unsigned int playerTexture = loadTexture("assets/ground.jpg");
 
     // Configure depth map FBO
     const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
@@ -190,7 +192,6 @@ int main() {
     createMap();
 
     // 创建对象
-
     vector<Object> ground = createObjects(
         planeVertices, vector<unsigned int>{groundTexture, depthMap},
         groundPositions);
@@ -213,11 +214,14 @@ int main() {
 
 	// text
 	Text text = Text();
-	int frameCount = 100;
+	int frameCount = 20;
     string fps("FPS: ");
 
     //创建天空盒
     Skybox skybox(&skyboxShader);
+
+	// 创建粒子系统
+	ParticleGenerator Particles(100);
 
     // 配置着色器
     shader.use();
@@ -225,8 +229,6 @@ int main() {
     shader.setInt("shadowMap", 1);
 
     glm::vec3 lightPos(-2.0f, 7.0f, 2.0f);
-
-	//glEnable(GL_FRAMEBUFFER_SRGB);
 
     // 渲染
     while (!glfwWindowShouldClose(window)) {
@@ -300,6 +302,12 @@ int main() {
         player->setView(camera.GetViewMatrix());
         player->render(&playerShader, lightPos);
 
+		// 渲染粒子
+		particleShader.use();
+		particleShader.setMat4("projection", projection);
+		particleShader.setMat4("view", view);
+		Particles.Update(0.05f, 1000);
+		Particles.Draw(deltaTime, particleShader, glm::vec3(-1.5f, 0.0f, -1.5f));
 
         // 渲染天空盒
         view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
@@ -312,13 +320,14 @@ int main() {
 		projection = glm::ortho(0.0f, static_cast<GLfloat>(SCR_WIDTH), 0.0f, static_cast<GLfloat>(SCR_HEIGHT));
 		textShader.setMat4("projection", projection);
 
-		if (frameCount == 100) {
+		if (frameCount == 20) {
 			fps = string("FPS: ") + std::to_string((int)(1 / deltaTime));
 			frameCount = 0;
 		} else { 
 			++frameCount; 
 		}
 		text.RenderText(textShader, fps, 25.0f, 25.0f, 0.7f, glm::vec3(0.5, 0.8f, 0.2f));
+
 
         // 检查并调用事件，交换缓冲
         glfwSwapBuffers(window);
