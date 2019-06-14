@@ -22,9 +22,13 @@ public:
         this->walls = walls;
         this->boxes = boxes;
         this->player = player;
+		over = false;
     }
 
 	void playerMove(Direction direction) {
+		if (over) {
+			return;
+		}
         player->dir = direction;
 		glm::vec3 nextPos = getNextPos(player->position, direction);
 		int obj = ObjectInPos(nextPos);
@@ -39,6 +43,7 @@ public:
 			if (!nextObj) {
 				moveBox(nextPos, direction);
 				player->position = nextPos;
+				updateGameState();
 			}
 			// printObjectsPos(boxes);
 			break;
@@ -100,6 +105,22 @@ public:
         cout << endl;
     }
 
+	void updateGameState() {
+		for (int i = 0; i < boxes->size(); ++i) {
+			int j = 0;
+			for ( ; j < endPositions.size(); ++j) {
+				if ((*boxes)[i].position.x == endPositions[j].x && (*boxes)[i].position.z == endPositions[j].z) {
+					break;
+				}
+			}
+			if (j == endPositions.size()) {
+				over = false;
+				return;
+			}
+		}
+		over = true;
+	}
+
 	void resetObjsPos() {
         for (int i = 0; i < boxes->size(); ++i) {
             (*boxes)[i].position = boxPositions[i];
@@ -107,11 +128,16 @@ public:
         (*player).position = playerPosition;
     }
 
+	bool isGameOver() {
+		return over;
+	}
+
 private:
 	vector<Object> * walls;
 	vector<Object> * boxes;
 	Player * player;
 	Direction playerDirection;
+	bool over;
 };
 
 
