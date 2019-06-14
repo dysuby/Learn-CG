@@ -209,14 +209,12 @@ int main() {
     // player
     Player* player = Player::getInstance("assets/sheep.obj",
                                          SCR_WIDTH, SCR_HEIGHT, depthMap);
-
-
+    manager.init(&wall, &box, player);
 
 	// text
 	Text text = Text();
 	int frameCount = 100;
-
-    manager.init(&wall, &box, player);
+    string fps("FPS: ");
 
     //创建天空盒
     Skybox skybox(&skyboxShader);
@@ -229,7 +227,6 @@ int main() {
     glm::vec3 lightPos(-2.0f, 7.0f, 2.0f);
 
 	//glEnable(GL_FRAMEBUFFER_SRGB);
-	string fps;
 
     // 渲染
     while (!glfwWindowShouldClose(window)) {
@@ -321,8 +318,8 @@ int main() {
 		} else { 
 			++frameCount; 
 		}
+		text.RenderText(textShader, fps, 25.0f, 25.0f, 0.7f, glm::vec3(0.5, 0.8f, 0.2f));
 
-		text.RenderText(textShader, fps, 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
         // 检查并调用事件，交换缓冲
         glfwSwapBuffers(window);
         glfwPollEvents();
