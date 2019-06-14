@@ -25,37 +25,37 @@ public:
 		over = false;
     }
 
-	void playerMove(Direction direction) {
-		if (over) {
-			return;
-		}
+    void playerMove(Direction direction) {
+        if (over) {
+            return;
+        }
         player->dir = direction;
-		glm::vec3 nextPos = getNextPos(player->position, direction);
-		int obj = ObjectInPos(nextPos);
-		switch (obj) {
-		case 0:
-			player->position = nextPos;
-			break;
-		case 2: {
-			// printObjectsPos(boxes);
-			glm::vec3 boxNextPos = getNextPos(nextPos, direction);
-			int nextObj = ObjectInPos(boxNextPos);
-			if (!nextObj) {
-				moveBox(nextPos, direction);
-				player->position = nextPos;
-				updateGameState();
-			}
-			// printObjectsPos(boxes);
-			break;
-		}
-		case 1:
-			break;
-		default:
-			break;
-		}
+        glm::vec3 nextPos = getNextPos(player->position, direction);
+        int obj = ObjectInPos(nextPos);
+        switch (obj) {
+            case 0:
+                player->position = nextPos;
+                break;
+            case 2: {
+                // printObjectsPos(boxes);
+                glm::vec3 boxNextPos = getNextPos(nextPos, direction);
+                int nextObj = ObjectInPos(boxNextPos);
+                if (!nextObj) {
+                    moveBox(nextPos, direction);
+                    player->position = nextPos;
+                    updateGameState();
+                }
+                // printObjectsPos(boxes);
+                break;
+	    }
+            case 1:
+                break;
+            default:
+                break;
+        }
     }
 
-	int ObjectInPos(glm::vec3 pos) {
+    int ObjectInPos(glm::vec3 pos) {
         for (int i = 0; i < walls->size(); ++i) {
             if (pos.x == (*walls)[i].position.x && pos.z == (*walls)[i].position.z)
                 return 1;
@@ -67,7 +67,7 @@ public:
         return 0;
     }
 
-	glm::vec3 getNextPos(const glm::vec3 curPos, Direction direction) {
+    glm::vec3 getNextPos(const glm::vec3 curPos, Direction direction) {
         glm::vec3 nextPos = curPos;
         switch (direction) {
         case Left:
@@ -88,7 +88,7 @@ public:
         return nextPos;
     }
 
-	bool moveBox(const glm::vec3 boxPos, Direction direction) {
+    bool moveBox(const glm::vec3 boxPos, Direction direction) {
         for (int i = 0; i < boxes->size(); ++i) {
             if (boxPos.x == (*boxes)[i].position.x && boxPos.z == (*boxes)[i].position.z) {
                 (*boxes)[i].position = getNextPos((*boxes)[i].position, direction);
@@ -105,39 +105,40 @@ public:
         cout << endl;
     }
 
-	void updateGameState() {
-		for (int i = 0; i < boxes->size(); ++i) {
-			int j = 0;
-			for ( ; j < endPositions.size(); ++j) {
-				if ((*boxes)[i].position.x == endPositions[j].x && (*boxes)[i].position.z == endPositions[j].z) {
-					break;
-				}
-			}
-			if (j == endPositions.size()) {
-				over = false;
-				return;
-			}
-		}
-		over = true;
-	}
+    void updateGameState() {
+        for (int i = 0; i < boxes->size(); ++i) {
+            int j = 0;
+            for ( ; j < endPositions.size(); ++j) {
+                if ((*boxes)[i].position.x == endPositions[j].x && (*boxes)[i].position.z == endPositions[j].z) {
+                    break;
+                }
+            }
+            if (j == endPositions.size()) {
+                over = false;
+                return;
+            }
+        }
+        over = true;
+    }
 
-	void resetObjsPos() {
+    void resetObjsPos() {
         for (int i = 0; i < boxes->size(); ++i) {
             (*boxes)[i].position = boxPositions[i];
         }
         (*player).position = playerPosition;
+        over = false;
     }
 
-	bool isGameOver() {
-		return over;
-	}
+    bool isGameOver() {
+        return over;
+    }
 
 private:
-	vector<Object> * walls;
-	vector<Object> * boxes;
-	Player * player;
-	Direction playerDirection;
-	bool over;
+    vector<Object> * walls;
+    vector<Object> * boxes;
+    Player * player;
+    Direction playerDirection;
+    bool over;
 };
 
 
