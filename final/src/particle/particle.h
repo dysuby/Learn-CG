@@ -15,12 +15,12 @@
 
 struct Particle {
 	glm::vec3 Position;
-	glm::vec3 Velocity = glm::vec3(0.0f, 1.0f, 0.0f);
-	glm::vec4 Color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	glm::vec3 Velocity = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec4 Color = glm::vec4(0.54f, 0.11f, 0.11f, 1.0f);
 	GLfloat Life;
 	GLfloat gravityEffect;
 	GLfloat rotation;
-	GLfloat scale;
+	GLfloat scale = 0.1f;
 	GLfloat elapsedTime = 0;
 };
 

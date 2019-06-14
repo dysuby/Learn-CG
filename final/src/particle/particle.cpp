@@ -17,7 +17,7 @@ void ParticleGenerator::Update(float dt, int newParticles) {
 		if (p.Life > 0.0f) {	
 			// particle is alive, thus update
 			p.Position -= p.Velocity * dt;
-			p.Color.a -= dt * 2.5;
+			p.Color.a -= dt * 0.8;
 		}
 	}
 }
@@ -30,7 +30,7 @@ void ParticleGenerator::Draw(float& deltaTime, Shader shader, glm::vec3 position
 		if (particle.Life > 0.0f) {
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, position);
-			model = glm::scale(model, glm::vec3(0.08f, 0.08f, 0.08f));
+			model = glm::scale(model, glm::vec3(particle.scale, particle.scale, particle.scale));
 			shader.setMat4("model", model);
 			shader.setVec4("color", particle.Color);
 			shader.setVec3("offset", particle.Position);
@@ -96,7 +96,7 @@ void ParticleGenerator::init() {
 	glBindVertexArray(this->VAO);
 	// Fill mesh buffer
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(particle_quad), particle_quad, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(particle_quad), particle_quad, GL_DYNAMIC_DRAW);
 	// Set mesh attributes
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -138,7 +138,7 @@ void ParticleGenerator::respawnParticle(Particle &particle) {
 
 	GLfloat rColor = 0.8 + ((rand() % 100) / 100.0f);
 
-	particle.Position = glm::vec3(0.0f) + glm::vec3(getRand() * 8, getRand(), getRand() * 8);
+	particle.Position = glm::vec3(0.0f) + glm::vec3(getRand() * 10, getRand() * 3, getRand() * 10);
 	GLfloat disFromOrigin = pow(particle.Position.x, 2) + pow(particle.Position.z, 2);
 	particle.Color = glm::vec4(rColor - 0.01 * disFromOrigin, getRand() / 5, 0.0f, 1.0f);
 	particle.Life = 3.0f - 0.1 * disFromOrigin;

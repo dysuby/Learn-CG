@@ -221,7 +221,7 @@ int main() {
     Skybox skybox(&skyboxShader);
 
 	// 创建粒子系统
-	ParticleGenerator Particles(100);
+	ParticleGenerator Particles(300);
 
     // 配置着色器
     shader.use();
@@ -237,7 +237,7 @@ int main() {
         lastFrame = currentFrame;
 
         // input
-        processInput(window);
+		processInput(window);
 
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -298,16 +298,21 @@ int main() {
         renderObjects(box, &shader);
         renderObjects(end, &shader);
 
+
+		if (manager.isGameOver()) {
+			 //渲染粒子
+			particleShader.use();
+			particleShader.setMat4("projection", projection);
+			particleShader.setMat4("view", view);
+			Particles.Update(0.05f, 500);
+			Particles.Draw(deltaTime, particleShader, glm::vec3(-2.5f, 0.0f, -0.5f));
+			Particles.Draw(deltaTime, particleShader, glm::vec3(-2.5f, 0.0f, -1.5f));
+			Particles.Draw(deltaTime, particleShader, glm::vec3(-2.5f, 0.0f, -2.5f));
+		}
+
         playerShader.use();
         player->setView(camera.GetViewMatrix());
         player->render(&playerShader, lightPos);
-
-		// 渲染粒子
-		particleShader.use();
-		particleShader.setMat4("projection", projection);
-		particleShader.setMat4("view", view);
-		Particles.Update(0.05f, 1000);
-		Particles.Draw(deltaTime, particleShader, glm::vec3(-1.5f, 0.0f, -1.5f));
 
         // 渲染天空盒
         view = glm::mat4(glm::mat3(camera.GetViewMatrix()));

@@ -126,6 +126,7 @@ public:
             (*boxes)[i].position = boxPositions[i];
         }
         (*player).position = playerPosition;
+		over = false;
     }
 
 	bool isGameOver() {
