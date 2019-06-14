@@ -17,6 +17,10 @@
 #include "skybox/skybox.h"
 #include "utils/utils.h"
 
+#include "text/Text.h"
+#include <ft2build.h>
+#include FT_FREETYPE_H  
+
 using namespace std;
 
 // 设置窗口大小
@@ -138,6 +142,9 @@ int main() {
 
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // 创建着色器
     Shader shader("glsl/shader.vs.glsl", "glsl/shader.fs.glsl");
@@ -145,7 +152,7 @@ int main() {
     Shader skyboxShader("glsl/skyboxShader.vs.glsl",
                         "glsl/skyboxShader.fs.glsl");
     Shader playerShader("glsl/player.vs.glsl", "glsl/player.fs.glsl");
-
+	Shader textShader("glsl/text.vs.glsl", "glsl/text.fs.glsl");
 
     // 加载纹理
     unsigned int groundTexture = loadTexture("assets/grass.png");
@@ -204,6 +211,11 @@ int main() {
                                          SCR_WIDTH, SCR_HEIGHT, depthMap);
 
 
+
+	// text
+	Text text = Text();
+	int frameCount = 100;
+
     manager.init(&wall, &box, player);
 
     //创建天空盒
@@ -217,6 +229,7 @@ int main() {
     glm::vec3 lightPos(-2.0f, 7.0f, 2.0f);
 
 	//glEnable(GL_FRAMEBUFFER_SRGB);
+	string fps;
 
     // 渲染
     while (!glfwWindowShouldClose(window)) {
@@ -290,12 +303,26 @@ int main() {
         player->setView(camera.GetViewMatrix());
         player->render(&playerShader, lightPos);
 
+
         // 渲染天空盒
         view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
         skybox.render(view, projection);
 
         renderTitle();
 
+		// 渲染文本
+		textShader.use();
+		projection = glm::ortho(0.0f, static_cast<GLfloat>(SCR_WIDTH), 0.0f, static_cast<GLfloat>(SCR_HEIGHT));
+		textShader.setMat4("projection", projection);
+
+		if (frameCount == 100) {
+			fps = string("FPS: ") + std::to_string((int)(1 / deltaTime));
+			frameCount = 0;
+		} else { 
+			++frameCount; 
+		}
+
+		text.RenderText(textShader, fps, 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
         // 检查并调用事件，交换缓冲
         glfwSwapBuffers(window);
         glfwPollEvents();
