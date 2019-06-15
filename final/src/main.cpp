@@ -20,6 +20,7 @@
 #include "utils/utils.h"
 #include "text/Text.h"
 #include "particle/particle.h"
+#include "explosion/Explosion.h"
 
 #include FT_FREETYPE_H  
 
@@ -223,6 +224,8 @@ int main() {
 	// 创建粒子系统
 	ParticleGenerator Particles(300);
 
+    Explosion explosions(particleShader);
+
     // 配置着色器
     shader.use();
     shader.setInt("diffuseTexture", 0);
@@ -244,6 +247,7 @@ int main() {
 
         if (restart) {
             manager.resetObjsPos();
+            explosions.reset();
             restart = false;
         }
         // 1. render depth of scene to texture (from light's perspective)
@@ -298,7 +302,6 @@ int main() {
         renderObjects(box, &shader);
         renderObjects(end, &shader);
 
-
 		if (manager.isGameOver()) {
 			 //渲染粒子
 			particleShader.use();
@@ -308,6 +311,13 @@ int main() {
 			Particles.Draw(deltaTime, particleShader, glm::vec3(-2.5f, 0.0f, -0.5f));
 			Particles.Draw(deltaTime, particleShader, glm::vec3(-2.5f, 0.0f, -1.5f));
 			Particles.Draw(deltaTime, particleShader, glm::vec3(-2.5f, 0.0f, -2.5f));
+            Particles.Draw(deltaTime, particleShader, player->position);
+
+            //explosion
+            explosions.Update(deltaTime, 1);
+            explosions.Draw(glm::vec3(-2.5f, 0.0f, -0.5f));
+            explosions.Draw(glm::vec3(-2.5f, 0.0f, -1.5f));
+            explosions.Draw(glm::vec3(-2.5f, 0.0f, -2.5f));
 		}
 
         playerShader.use();
